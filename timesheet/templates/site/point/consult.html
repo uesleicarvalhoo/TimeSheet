@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block body %}
+<article class="panel {{ color_theme }}">
+    <div class="panel-heading">Consulta de ponto</div>
+    <div class="form-body">
+        {% for register in [] %}
+        <div class="field is-grouped">
+            <div class="control is-expanded">
+                <a class="panel-block is-active show-modal">
+                    <span class="panel-icon">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                    </span>
+                </a>
+            </div>
+            <div class="control buttons">
+                <strong>
+                    <a class="button {{ color_theme }} is-small">Editar</a>
+                </strong>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</article>
+{% endblock body %}
