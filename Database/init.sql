@@ -7,6 +7,7 @@ CREATE TABLE user(
     name varchar(50) not null,
     username varchar(30) not null,
     password varchar(150) not null,
+    workload integer,
     admin tinyint(1),
     active tinyint(1),
     created_at datetime(6),

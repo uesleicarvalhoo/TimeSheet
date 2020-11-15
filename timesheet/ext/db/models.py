@@ -1,6 +1,8 @@
 import datetime as dt
+from typing import List
 
 from flask_login import UserMixin
+from sqlalchemy import event
 from werkzeug.security import generate_password_hash
 
 from . import db
@@ -76,15 +78,15 @@ class User(BaseModel, UserMixin, db.Model):
     username = db.Column("username", db.Unicode, unique=True)
     password = db.Column("password", db.Unicode)
     name = db.Column("name", db.Unicode)
+    workload = db.Column("workload", db.Integer)
     admin = db.Column("admin", db.Boolean, default=False)
     active = db.Column("active", db.Boolean, default=True)
     created_at = db.Column("created_at", db.Date, default=dt.datetime.utcnow())
     updated_at = db.Column("updated_at", db.Date, default=dt.datetime.utcnow())
 
     @staticmethod
-    def create(user: str, password: str, name: str, admin: bool = False, active: bool = True, save: bool = True):
-        hash_passwd = generate_password_hash(password)
-        user = User(username=user, password=hash_passwd, name=name, admin=admin, active=active)
+    def create(user: str, password: str, name: str, workload: int, admin: bool = False, save: bool = True):
+        user = User(username=user, password=password, name=name, workload=workload, admin=admin)
 
         if save:
             user.save()
@@ -92,16 +94,16 @@ class User(BaseModel, UserMixin, db.Model):
         return user
 
     @staticmethod
-    def delete(**kwargs):
+    def delete(**kwargs: dict):
         User.query.filter_by(**kwargs).delete()
         db.session.commit()
 
     @property
-    def is_admin(self):
+    def is_admin(self) -> bool:
         return self.admin
 
     @property
-    def is_active(self):
+    def is_active(self) -> bool:
         return self.active
 
     @staticmethod
@@ -123,12 +125,20 @@ class Register(BaseModel, db.Model):
     editable_fields = []
 
     @staticmethod
-    def get(**filter) -> db.Model:
+    def get(**filter: dict) -> db.Model:
         return Register.query.filter_by(**filter).first()
+
+    @staticmethod
+    def get_all(**filter: dict) -> List[db.Model]:
+        return Register.query.filter_by(**filter).all()
 
     @staticmethod
     def get_by_date(user_id: int, date: dt.datetime) -> db.Model:
         return Register.query.filter_by(user_id=user_id, date=date).first()
+
+    @staticmethod
+    def filter(*args: List) -> List[db.Model]:
+        return Register.query.filter(*args).all()
 
     @staticmethod
     def create(user_id: int, date: dt.date, save: bool = True) -> dict:
@@ -146,9 +156,6 @@ class Register(BaseModel, db.Model):
 
         return register
 
-    def get_pauses(self):
-        return Pauses.get_all(register_id=self.id)
-
     def to_dict(self) -> dict:
         data = super().to_dict()
         data["pauses"] = [pause.to_dict() for pause in self.pauses]
@@ -160,6 +167,21 @@ class Register(BaseModel, db.Model):
         data["pauses"] = [pause.to_json() for pause in self.pauses]
 
         return data
+
+    def get_pause(self, pause_id: int) -> db.Model:
+        return Pauses.get(register_id=self.id, pause_id=pause_id) or Pauses()
+
+    @property
+    def entry_hour(self) -> str:
+        if self.entry:
+            return self.entry.strftime("%H:%M")
+        return "--:--"
+
+    @property
+    def finish_hour(self) -> str:
+        if self.finish:
+            return self.finish.strftime("%H:%M")
+        return "--:--"
 
 
 class Pauses(BaseModel, db.Model):
@@ -188,6 +210,18 @@ class Pauses(BaseModel, db.Model):
     def get(**filter) -> db.Model:
         return Pauses.query.filter_by(**filter).first()
 
+    @property
+    def init_hour(self) -> str:
+        if self.init:
+            return self.init.strftime("%H:%M")
+        return "--:--"
+
+    @property
+    def finish_hour(self) -> str:
+        if self.finish:
+            return self.finish.strftime("%H:%M")
+        return "--:--"
+
 
 class PauseInfos(BaseModel, db.Model):
     __tablename__ = "pause_infos"
@@ -199,3 +233,11 @@ class PauseInfos(BaseModel, db.Model):
     @staticmethod
     def get_all(**filter):
         return PauseInfos.query.filter_by(**filter).all()
+
+
+@event.listens_for(User.password, 'set', retval=True)
+def hash_user_password(target, value, oldvalue, initiator):
+    if value != oldvalue:
+        return generate_password_hash(value)
+
+    return value

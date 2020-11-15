@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "93cd02c95c8bf92545d9d58535829c500210ea8176e4dc98dd3f61b605efae30"
+            "sha256": "e20fad348727b046b5630d8ef9e7982fd5742c2a769a7474590a3933bd78ea73"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -54,13 +54,6 @@
             "index": "pypi",
             "version": "==1.5.7"
         },
-        "flask-auth": {
-            "hashes": [
-                "sha256:a749c1f021a731ba8b40656bf863093840fa8cb4f1d2675571c1073357245285"
-            ],
-            "index": "pypi",
-            "version": "==0.85"
-        },
         "flask-login": {
             "hashes": [
                 "sha256:6d33aef15b5bcead780acc339464aae8a6e28f13c90d8b1cf9de8b549d1c0b4b",
@@ -92,6 +85,13 @@
             ],
             "index": "pypi",
             "version": "==2.4.4"
+        },
+        "flask-swagger-ui": {
+            "hashes": [
+                "sha256:f329752a65b2940ada8eeb57bce613f7c0a12856a9c31063bb9e33798554c9ed"
+            ],
+            "index": "pypi",
+            "version": "==3.36.0"
         },
         "flask-wtf": {
             "hashes": [

@@ -19,7 +19,6 @@ flask-restful = "*"
 flask-sqlalchemy = "*"
 flask-wtf = "*"
 flask-login = "*"
-flask-auth = "*"
 flask-pydantic = "*"
 flask-admin = "*"
 

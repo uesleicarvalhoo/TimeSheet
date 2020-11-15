@@ -1,7 +1,7 @@
 from datetime import timedelta
 from typing import Callable
 
-from flask import Flask
+from flask import Flask, flash, redirect, url_for, request
 from flask_login import LoginManager, current_user, login_user
 from werkzeug.security import check_password_hash
 
@@ -53,3 +53,9 @@ def check_api_auth(func: Callable, *args, **kwargs):
         return func(*args, **kwargs)
 
     return decorated_function
+
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    flash("Você precisa estar logado para acessar esta página.", "is-danger")
+    return redirect(url_for("site.login", next=request.url))

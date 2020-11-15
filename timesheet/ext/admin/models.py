@@ -16,7 +16,7 @@ class AdminView(AdminIndexView):
                 ),
                 "is-danger",
             )
-            return redirect(url_for("login", next=request.url))
+            return redirect(url_for("site.login", next=request.url))
 
         if current_user.is_admin:
             return super().index()
@@ -29,7 +29,7 @@ class AdminView(AdminIndexView):
                 ),
                 "is-danger",
             )
-            return redirect(url_for("login", next=request.url))
+            return redirect(url_for("site.login", next=request.url))
 
 
 class BaseView(ModelView):
@@ -50,13 +50,21 @@ class BaseView(ModelView):
                 ),
                 "is-danger",
             )
-            return redirect(url_for("login", next=request.url))
+            return redirect(url_for("site.login", next=request.url))
 
 
 class UserModelView(BaseView):
     column_exclude_list = ["id", "password"]
     column_searchable_list = ["username", "name"]
-    column_labels = {"userame": "Usuario", "name": "Nome", "password": "Senha"}
+    column_labels = {
+        "userame": "Usuario",
+        "name": "Nome",
+        "password": "Senha",
+        "workload": "Carga horaria (mensal)",
+        "created_at": "Criado em",
+        "updated_at": "Atualizado em",
+    }
+    form_excluded_columns = ["created_at", "updated_at"]
 
 
 class PauseInfosView(BaseView):
