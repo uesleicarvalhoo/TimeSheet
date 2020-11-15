@@ -1,5 +1,4 @@
-from flask import (Blueprint, Response, flash, redirect, render_template,
-                   request, url_for)
+from flask import Blueprint, Response, flash, redirect, render_template, request, url_for
 from flask_login import logout_user
 
 from timesheet.ext.auth import validate_user

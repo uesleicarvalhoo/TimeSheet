@@ -7,7 +7,7 @@
     {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinvision</title>
+    <title>Clinvision - Timesheet</title>
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
@@ -42,7 +42,7 @@
                 Folha de ponto
             </a>
             {% if current_user.is_admin %}
-            <a class="navbar-item" href="{{ url_for('site.index') }}">
+            <a class="navbar-item" href="{{ url_for('user.index_view') }}">
                 Tela Administrativa
             </a>
             {% endif %}

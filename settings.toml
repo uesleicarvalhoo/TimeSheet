@@ -3,14 +3,15 @@ JSON_AS_ASCII = false
 SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:admin@localhost:3306/timesheet"
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 SESSION_REFRESH_EACH_REQUEST = false
-COLOR_THEME = "is-danger"
+COLOR_THEME = "is-success"
 
 EXTENSIONS = [
     "timesheet.ext.api:init_app",
     "timesheet.ext.db:init_app",
     "timesheet.ext.site:init_app",
     "timesheet.ext.auth:init_app",
+    "timesheet.ext.admin:init_app",
 ]
 
 [development]
-FLASK_DEBUG = true
+DEBUG = true

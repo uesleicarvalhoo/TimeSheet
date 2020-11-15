@@ -1,7 +1,8 @@
 from datetime import timedelta
+from typing import Callable
 
 from flask import Flask
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, current_user, login_user
 from werkzeug.security import check_password_hash
 
 from timesheet.ext.db.models import User
@@ -11,7 +12,7 @@ login_manager = LoginManager()
 
 def init_app(app: Flask) -> None:
     login_manager.init_app(app)
-    login_manager.login_view = "login"
+    login_manager.login_view = "site.login"
     app.permanent_session_lifetime = timedelta(hours=1)
 
 
@@ -40,3 +41,15 @@ def validate_user(username: str, password: str) -> dict:
             response = {"success": False, "message": "Senha incorreta"}
 
     return response
+
+
+def check_api_auth(func: Callable, *args, **kwargs):
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_authenticated:
+            return {
+                "success": False,
+                "message": "Você precisa fazer login antes de continuar",
+            }, 401
+        return func(*args, **kwargs)
+
+    return decorated_function

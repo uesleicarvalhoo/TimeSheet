@@ -4,6 +4,7 @@
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/point/register.css') }}">
 {% endblock extra_css%}
 {% block extra_scripts%}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
 <script src="{{ url_for('static', filename='js/point/register.js') }}" type="text/javascript"></script>
 {% endblock extra_scripts%}
 
@@ -13,20 +14,24 @@
     <div class="form-body">
         <div class="field is-grouped is-grouped-centered is-grouped-multiline">
             <div class="control register" id="entry">
-                <label class="label">--:--</label>
-                <button class="button is-ghost" onclick="register_pause('Entrada')">Entrada</button>
+                <label class="label">--:--:--</label>
+                <button class="button is-ghost" onclick="register_entry()">Entrada</button>
             </div>
-            <div class="control register" id="pause1">
-                <label class="label">--:--</label>
-                <button class="button is-ghost" onclick="register_pause('Lanche')">Lanche</button>
+            {% for pause in pauses %}
+            <div class="control register" id="init-{{pause.id}}">
+                <label class="label">--:--:--</label>
+                <button class="button is-ghost"
+                    onclick="register_pause( '{{ pause.id }}', 'init')">{{pause.init_label}}</button>
             </div>
-            <div class="control register" id="pause1_return">
-                <label class="label">--:--</label>
-                <button class="button is-ghost" onclick="register_pause('Retorno do Lanche')">Retorno Lanche</button>
+            <div class="control register" id="finish-{{pause.id}}">
+                <label class="label">--:--:--</label>
+                <button class="button is-ghost"
+                    onclick="register_pause( '{{ pause.id }}', 'end')">{{pause.end_label}}</button>
             </div>
-            <div class="control register" id="exit">
-                <label class="label">--:--</label>
-                <button class="button is-ghost" onclick="register_pause('Saida')">Saida</button>
+            {% endfor %}
+            <div class="control register" id="finish">
+                <label class="label">--:--:--</label>
+                <button class="button is-ghost" onclick="register_finish()">Saida</button>
             </div>
         </div>
     </div>

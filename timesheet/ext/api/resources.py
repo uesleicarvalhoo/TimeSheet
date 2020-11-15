@@ -1,42 +1,93 @@
+from datetime import datetime
 from typing import List
 
 from flask import request
+from flask_login import current_user
+from flask_pydantic import validate
 from flask_restful import Api, Resource
 
-from timesheet.ext.db.models import Register
+from timesheet.ext.auth import check_api_auth
+from timesheet.ext.db.models import Pauses, Register
+
+from .schemas import Date, Pause
 
 api = Api()
 
 
 @api.resource("/api/register")
 class ResourceRegisterPoint(Resource):
+    @check_api_auth
+    @validate(body=Pause)
     def post(self) -> dict:
-        data = request.json
+        status = 201
+        user_id = current_user.id
+        pause_id = request.body_params.id
+        event = request.body_params.event
+        type = request.body_params.type
+        hour = datetime.now().time()
+        register = Register.get(user_id=user_id, date=datetime.now().date())
 
-        if data is None:
-            response = {"success": False, "message": "Informe os dados da requisição"}
+        if register is None:
+            register = Register.create(user_id, date=datetime.now().date(), save=False)
+            register.save()
 
-        else:
-            id = data.get("id")  # Trocar para puxar pelo ID do usuário atual
-            pause = data.get("pause")
-            event = data.get("event")
+        if register.entry is None and not type == "register":
+            response = {"message": "Você precisa registrar a entrada primeiro"}
 
-            register = Register.create(
-                user_id=id,
-                pause=pause,
-                event=event,
-            )
-            response = register.save()
+        elif register.finish is not None:
+            response = {"message": "O registro já foi encerrado"}
 
-        return response
+        elif type == "register":
+            if not event == "init" and register.entry is None:
+                response = {"message": "Você precisa registrar a entrada primeiro"}
+
+            elif event == "init":
+                if register.entry is not None:
+                    response = {"message": "A entrada já foi registrada!"}
+                else:
+                    register.entry = hour
+                    response = register.save()
+            elif register.finish is not None:
+                response = {"message": "A saida já foi registrada!"}
+
+            else:
+                register.finish = hour
+                response = register.save()
+
+        elif type == "pause":
+            pause = Pauses.get(register_id=register.id, pause_id=pause_id)
+            if pause is None:
+                pause = Pauses.create(register.id, pause_id, save=False)
+
+            if not event == "init" and pause.init is None:
+                response = {"message": "Você precisa registrar o inicio da pausa primeiro"}
+
+            elif event == "init":
+                if pause.init is not None:
+                    response = {"message": "A entrada já foi registrada!"}
+                else:
+                    pause.init = hour
+                    response = pause.save()
+            elif pause.finish is not None:
+                response = {"message": "A saida já foi registrada!"}
+
+            else:
+                pause.finish = hour
+                response = pause.save()
+
+        if not response.get("success"):
+            status = 400
+
+        return response, status
 
 
-@api.resource("/api/consult/<string:date>")
+@api.resource("/api/consult")
 class ResourceConsultPoint(Resource):
-    def get(self, date: str) -> List[dict]:
-        user_id = 1
-        response = [
-            register.to_dict() for register in Register.get_by_date(user_id, date)
-        ]
+    @check_api_auth
+    @validate(query=Date)
+    def get(self) -> List[dict]:
+        register = Register.get_by_date(current_user.id, request.query_params.date)
+        if register is None:
+            return {}
 
-        return response
+        return register.to_json()
