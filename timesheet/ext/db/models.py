@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import List
+from typing import List, Dict
 
 from flask_login import UserMixin
 from sqlalchemy import event
@@ -18,10 +18,10 @@ class BaseModel:
             if key in columns:
                 setattr(self, key, value)
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> Dict:
         return {col: getattr(self, col) for col in self.__table__.columns.keys()}
 
-    def to_json(self) -> dict:
+    def to_json(self) -> Dict:
         data = self.to_dict()
 
         for col, value in data.items():
@@ -50,7 +50,7 @@ class BaseModel:
             self.updated_at = dt.datetime.now()
             self.save()
 
-    def save(self) -> dict:
+    def save(self) -> Dict:
         try:
             db.session.add(self)
             db.session.commit()
@@ -141,7 +141,7 @@ class Register(BaseModel, db.Model):
         return Register.query.filter(*args).all()
 
     @staticmethod
-    def create(user_id: int, date: dt.date, save: bool = True) -> dict:
+    def create(user_id: int, date: dt.date, save: bool = True) -> Dict:
         register = Register(user_id=user_id, date=date)
         if save:
             return register.save()
@@ -156,13 +156,13 @@ class Register(BaseModel, db.Model):
 
         return register
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> Dict:
         data = super().to_dict()
         data["pauses"] = [pause.to_dict() for pause in self.pauses]
 
         return data
 
-    def to_json(self) -> dict:
+    def to_json(self) -> Dict:
         data = super().to_json()
         data["pauses"] = [pause.to_json() for pause in self.pauses]
 
@@ -183,7 +183,7 @@ class Register(BaseModel, db.Model):
             return self.finish.strftime("%H:%M")
         return "--:--"
 
-    def validate(self, event: str) -> bool:
+    def validate(self, event: str) -> Dict:
         success = True
         msg = ""
         if event == "entry":
@@ -218,7 +218,7 @@ class Pauses(BaseModel, db.Model):
     info = db.relationship("PauseInfos")
 
     @staticmethod
-    def create(register_id: int, pause_id: int, save: bool = True) -> dict:
+    def create(register_id: int, pause_id: int, save: bool = True) -> Dict:
         pause = Pauses(register_id=register_id, pause_id=pause_id)
         if save:
             return pause.save()
@@ -241,7 +241,7 @@ class Pauses(BaseModel, db.Model):
             return self.finish.strftime("%H:%M")
         return "--:--"
 
-    def validate(self, event: str) -> bool:
+    def validate(self, event: str) -> Dict:
         success = True
         msg = ""
         if event == "entry":
