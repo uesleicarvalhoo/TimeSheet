@@ -1,7 +1,7 @@
 from datetime import timedelta
 from typing import Callable
 
-from flask import Flask, flash, redirect, url_for, request
+from flask import Flask, flash, redirect, request, url_for
 from flask_login import LoginManager, current_user, login_user
 from werkzeug.security import check_password_hash
 
@@ -17,7 +17,7 @@ def init_app(app: Flask) -> None:
 
 
 @login_manager.user_loader
-def load_user(user_id):
+def load_user(user_id: int) -> User:
     return User.get(id=user_id)
 
 
@@ -43,7 +43,7 @@ def validate_user(username: str, password: str) -> dict:
     return response
 
 
-def check_api_auth(func: Callable, *args, **kwargs):
+def check_api_auth(func: Callable, *args, **kwargs) -> Callable:
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
             return {

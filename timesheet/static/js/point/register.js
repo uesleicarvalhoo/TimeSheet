@@ -32,11 +32,12 @@ $(document).ready(function () {
         url: $url_consult + "?date=" + today,
         type: "GET",
         success: function (response) {
+            console.log(response)
             update_entry(response.entry)
             update_finish(response.finish)
             if (response.pauses) {
                 $.each(response.pauses, function (index, register) {
-                    update_event("init", register.pause_id, register.init)
+                    update_event("entry", register.pause_id, register.entry)
                     update_event("finish", register.pause_id, register.finish)
                 });
             };
@@ -58,8 +59,7 @@ function register_pause(pause_id, event) {
             type: "pause"
         }),
         success: function (response) {
-
-            update_event("init", response.data.pause_id, response.data.init)
+            update_event("entry", response.data.pause_id, response.data.entry)
             update_event("finish", response.data.pause_id, response.data.finish)
         },
         error: function (response) {
@@ -77,7 +77,7 @@ function register_entry() {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({
             id: 0,
-            event: "init",
+            event: "entry",
             type: "register"
         }),
         success: function (response) {
@@ -99,7 +99,7 @@ function register_finish() {
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify({
             id: 0,
-            event: "end",
+            event: "finish",
             type: "register"
         }),
         success: function (response) {

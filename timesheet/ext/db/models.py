@@ -38,9 +38,9 @@ class BaseModel:
         db.session.commit()
 
     def update(self, **data: dict) -> None:
-        data = data.copy()
+        data_copy = data.copy()
 
-        for col in data.keys():
+        for col in data_copy.keys():
             if col not in self.editable_fields:
                 data.pop(col, None)
 
@@ -122,7 +122,7 @@ class Register(BaseModel, db.Model):
     created_at = db.Column("created_at", db.Date, default=dt.datetime.utcnow())
     updated_at = db.Column("updated_at", db.Date, default=dt.datetime.utcnow())
     pauses = db.relationship("Pauses", back_populates="register")
-    editable_fields = []
+    editable_fields = ["entry", "finish"]
 
     @staticmethod
     def get(**filter: dict) -> db.Model:
@@ -183,14 +183,33 @@ class Register(BaseModel, db.Model):
             return self.finish.strftime("%H:%M")
         return "--:--"
 
+    def validate(self, event: str) -> bool:
+        success = True
+        msg = ""
+        if event == "entry":
+            if self.entry:
+                msg = "A entrada já foi registrada!"
+
+        elif event == "finish":
+            if not self.entry:
+                success = False
+                msg = "Você precisa registrar a entrada primeiro"
+
+            if self.finish:
+                success = False
+                msg = "A saida já foi registrada!"
+
+        return {"success": success, "message": msg}
+
 
 class Pauses(BaseModel, db.Model):
     __tablename__ = "pauses"
     __name__ = "pausa"
+    editable_fields = ["entry", "finish"]
     id = db.Column("id", db.Integer, primary_key=True)
     register_id = db.Column("register_id", db.Integer, db.ForeignKey("register.id"))
     pause_id = db.Column("pause_id", db.Integer, db.ForeignKey("pause_infos.id"))
-    init = db.Column("init", db.Time(6))
+    entry = db.Column("entry", db.Time(6))
     finish = db.Column("finish", db.Time(6))
     created_at = db.Column("created_at", db.Date, default=dt.datetime.utcnow())
     updated_at = db.Column("updated_at", db.Date, default=dt.datetime.utcnow())
@@ -212,8 +231,8 @@ class Pauses(BaseModel, db.Model):
 
     @property
     def init_hour(self) -> str:
-        if self.init:
-            return self.init.strftime("%H:%M")
+        if self.entry:
+            return self.entry.strftime("%H:%M")
         return "--:--"
 
     @property
@@ -221,6 +240,28 @@ class Pauses(BaseModel, db.Model):
         if self.finish:
             return self.finish.strftime("%H:%M")
         return "--:--"
+
+    def validate(self, event: str) -> bool:
+        success = True
+        msg = ""
+        if event == "entry":
+            if self.entry:
+                success = False
+                msg = "A entrada já foi registrada!"
+
+        elif event == "finish":
+            if not self.entry:
+                success = False
+                msg = "Você precisa registrar a entrada primeiro!"
+
+            elif self.finish:
+                success = False
+                msg = "A saida já foi registrada!"
+
+        else:
+            return {"success": self.finish is not None}
+
+        return {"success": success, "message": msg}
 
 
 class PauseInfos(BaseModel, db.Model):

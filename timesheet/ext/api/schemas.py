@@ -10,7 +10,7 @@ class Pause(BaseModel):
 
     @validator("event")
     def validate_event(cls, v):
-        if v and v not in ["init", "end"]:
+        if v and v not in ["entry", "finish"]:
             raise ValueError(f'{v} não é um evento valido')
 
         return v

@@ -31,49 +31,24 @@ class ResourceRegisterPoint(Resource):
             register = Register.create(user_id, date=datetime.now().date(), save=False)
             register.save()
 
-        if register.entry is None and not type == "register":
-            response = {"message": "Você precisa registrar a entrada primeiro"}
-
-        elif register.finish is not None:
-            response = {"message": "O registro já foi encerrado"}
-
-        elif type == "register":
-            if not event == "init" and register.entry is None:
-                response = {"message": "Você precisa registrar a entrada primeiro"}
-
-            elif event == "init":
-                if register.entry is not None:
-                    response = {"message": "A entrada já foi registrada!"}
-                else:
-                    register.entry = hour
-                    response = register.save()
-            elif register.finish is not None:
-                response = {"message": "A saida já foi registrada!"}
-
-            else:
-                register.finish = hour
+        if type == "register":
+            response = register.validate(event)
+            if response["success"]:
+                register.update(**{event: hour})
                 response = register.save()
-
-        elif type == "pause":
-            pause = Pauses.get(register_id=register.id, pause_id=pause_id)
-            if pause is None:
-                pause = Pauses.create(register.id, pause_id, save=False)
-
-            if not event == "init" and pause.init is None:
-                response = {"message": "Você precisa registrar o inicio da pausa primeiro"}
-
-            elif event == "init":
-                if pause.init is not None:
-                    response = {"message": "A entrada já foi registrada!"}
-                else:
-                    pause.init = hour
-                    response = pause.save()
-            elif pause.finish is not None:
-                response = {"message": "A saida já foi registrada!"}
+        else:
+            if register.entry is None:
+                response = {"success": False, "message": "Você precisa registrar a entrada primeiro"}
 
             else:
-                pause.finish = hour
-                response = pause.save()
+                pause = Pauses.get(register_id=register.id, pause_id=pause_id)
+                if pause is None:
+                    pause = Pauses.create(register.id, pause_id, save=False)
+
+                response = pause.validate(event)
+                if response["success"]:
+                    pause.update(**{event: hour})
+                    response = pause.save()
 
         if not response.get("success"):
             status = 400

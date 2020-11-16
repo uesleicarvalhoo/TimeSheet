@@ -18,15 +18,15 @@
                 <button class="button is-ghost" onclick="register_entry()">Entrada</button>
             </div>
             {% for pause in pauses %}
-            <div class="control register" id="init-{{pause.id}}">
+            <div class="control register" id="entry-{{pause.id}}">
                 <label class="label">--:--:--</label>
                 <button class="button is-ghost"
-                    onclick="register_pause( '{{ pause.id }}', 'init')">{{pause.init_label}}</button>
+                    onclick="register_pause( '{{ pause.id }}', 'entry')">{{pause.init_label}}</button>
             </div>
             <div class="control register" id="finish-{{pause.id}}">
                 <label class="label">--:--:--</label>
                 <button class="button is-ghost"
-                    onclick="register_pause( '{{ pause.id }}', 'end')">{{pause.end_label}}</button>
+                    onclick="register_pause( '{{ pause.id }}', 'finish')">{{pause.end_label}}</button>
             </div>
             {% endfor %}
             <div class="control register" id="finish">

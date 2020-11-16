@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Any, List
+
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, SelectField, StringField
