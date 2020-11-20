@@ -1,0 +1,25 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+
+[dev-packages]
+isort = "*"
+flake8 = "*"
+black = "==20.8b1"
+
+[packages]
+dynaconf = "*"
+gunicorn = "*"
+mysql-connector-python = "*"
+flask = "*"
+flask-restful = "*"
+flask-sqlalchemy = "*"
+flask-wtf = "*"
+flask-login = "*"
+flask-pydantic = "*"
+flask-admin = "*"
+
+[requires]
+python_version = "3.8"
