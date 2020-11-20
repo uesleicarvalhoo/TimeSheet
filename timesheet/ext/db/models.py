@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import List, Dict
+from typing import Dict, List
 
 from flask_login import UserMixin
 from sqlalchemy import event

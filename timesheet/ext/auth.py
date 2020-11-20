@@ -1,5 +1,6 @@
 from datetime import timedelta
-from typing import Callable
+from functools import wraps
+from typing import Callable, Dict
 
 from flask import Flask, flash, redirect, request, url_for
 from flask_login import LoginManager, current_user, login_user
@@ -21,7 +22,7 @@ def load_user(user_id: int) -> User:
     return User.get(id=user_id)
 
 
-def validate_user(username: str, password: str) -> dict:
+def validate_user(username: str, password: str) -> Dict:
     user = User.get(username=username)
     if user is None:
         response = {"success": False, "message": "Usuario não cadastrado"}
@@ -44,6 +45,7 @@ def validate_user(username: str, password: str) -> dict:
 
 
 def check_api_auth(func: Callable, *args, **kwargs) -> Callable:
+    @wraps(func)
     def decorated_function(*args, **kwargs):
         if not current_user.is_authenticated:
             return {

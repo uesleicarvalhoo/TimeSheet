@@ -1,5 +1,5 @@
 from flask import Blueprint, Response, flash, redirect, render_template, request, url_for
-from flask_login import logout_user
+from flask_login import login_required, logout_user
 
 from timesheet.ext.auth import validate_user
 
@@ -23,6 +23,7 @@ def login() -> Response:
 
 
 @bp.route("/", methods=["GET"])
+@login_required
 def index() -> Response:
     return render_template("site/index.html")
 

@@ -5,7 +5,6 @@ verify_ssl = true
 
 
 [dev-packages]
-ipdb = "*"
 isort = "*"
 flake8 = "*"
 black = "==20.8b1"
