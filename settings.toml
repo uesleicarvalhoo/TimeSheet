@@ -1,8 +1,7 @@
 [default]
 JSON_AS_ASCII = false
-SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:admin@localhost:3306/timesheet"
 SQLALCHEMY_TRACK_MODIFICATIONS = false
-SESSION_REFRESH_EACH_REQUEST = false
+SESSION_REFRESH_EACH_REQUEST = true
 COLOR_THEME = "is-success"
 
 EXTENSIONS = [
@@ -15,3 +14,8 @@ EXTENSIONS = [
 
 [development]
 DEBUG = true
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:admin@localhost:3306/timesheet"
+
+[production]
+SQLALCHEMY_POOL_RECYCLE = 100
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://b846f101070bdb:4ea95c24@us-cdbr-east-02.cleardb.com/heroku_4c9d2a4e8dd9512"

@@ -1,6 +1,4 @@
-CREATE DATABASE timesheet;
-
-USE timesheet;
+USE heroku_4c9d2a4e8dd9512;
 
 CREATE TABLE user(
     id integer primary key auto_increment,
@@ -10,18 +8,18 @@ CREATE TABLE user(
     workload integer,
     admin tinyint(1),
     active tinyint(1),
-    created_at datetime(6),
-    updated_at datetime(6)
+    created_at datetime,
+    updated_at datetime
 );
 
 CREATE TABLE register(
     id Integer primary key auto_increment,
     user_id integer not null,
-    date datetime(6),
-    entry time(6),
-    finish time(6),
-    created_at datetime(6),
-    updated_at datetime(6)
+    date datetime,
+    entry time,
+    finish time,
+    created_at datetime,
+    updated_at datetime
 
 );
 
@@ -29,10 +27,10 @@ CREATE TABLE pauses(
     id integer primary key auto_increment,
     register_id integer,
     pause_id integer,
-    init time(6),
-    finish time(4),
-    created_at datetime(6),
-    updated_at datetime(6)
+    entry time,
+    finish time,
+    created_at datetime,
+    updated_at datetime
 );
 
 CREATE TABLE pause_infos(
