@@ -39,3 +39,14 @@
     {% endif %}
 </div>
 {% endmacro %}
+
+{% macro render_info(label, info) %}
+<div class="field is-horizontal is-grouped is-grouped-multiline">
+    <div class="control fix-width-9">
+        <label class="field-label label text-left">{{label}}</label>
+    </div>
+    <div class="control">
+        <label>{{ info }}</label>
+    </div>
+</div>
+{% endmacro %}

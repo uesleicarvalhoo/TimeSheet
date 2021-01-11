@@ -7,7 +7,9 @@ from flask_pydantic import validate
 from flask_restful import Api, Resource
 
 from timesheet.ext.auth import check_api_auth
-from timesheet.ext.db.models import Pauses, Register
+from timesheet.ext.db.models.pauses import Pauses
+from timesheet.ext.db.models.register import Register
+
 
 from .schemas import Date, Pause
 

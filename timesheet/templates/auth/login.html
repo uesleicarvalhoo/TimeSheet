@@ -3,7 +3,6 @@
 {% endblock menu %}
 
 {% block body %}
-{% set color_theme = config.get("COLOR_THEME", "is-primary") %}
 {% from "macros/render_messages.html" import render_message %}
 {% from "macros/render_form.html" import render_field %}
 {{ render_message() }}

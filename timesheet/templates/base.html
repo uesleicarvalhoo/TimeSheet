@@ -7,8 +7,8 @@
     {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clinvision - Timesheet</title>
-    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <title>{{config.get("APP_NAME")}} - Timesheet</title>
+    <link rel="shortcut icon" href="{{ config.get('FAV_ICO', url_for('static', filename='img/favicon.ico')) }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
@@ -22,7 +22,7 @@
 <nav class="navbar {{ color_theme }}" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="{{url_for('site.index')}}">
-            <img src="{{ url_for('static', filename='img/logo.png')}}" width="112" height="28">
+            <img src="{{ config.get('IMG_LOGO', url_for('static', filename='img/logo.png'))}}" width="112" height="28">
         </a>
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
             data-target="navbarBasicExample">
@@ -71,7 +71,7 @@
 <footer>
     {% block footer %}
     <footer class="footer">
-        <div class="content has-text-left	is-size-6">
+        <div class="content has-text-left is-size-6">
             <p>
                 <strong>Timesheet</strong> desenvolvido por <a
                     href="https://www.linkedin.com/in/uesleicarvalhoo/">Ueslei

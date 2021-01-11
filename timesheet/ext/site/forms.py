@@ -7,7 +7,7 @@ from wtforms import PasswordField, SelectField, StringField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import Required
 
-from timesheet.ext.db.models import User
+from timesheet.ext.db.models.users import User
 
 MONTHS = [
     (1, "Janeiro"),
@@ -33,7 +33,7 @@ def choice(data: dict, item: Any) -> str:
 
 def generate_years() -> List[int]:
     year = datetime.today().year
-    return [2020] + [y for y in range(2020, year)]
+    return [2020] + [y for y in range(2021, year)]
 
 
 class BaseForm(FlaskForm):
@@ -69,6 +69,6 @@ class FormTimeSheet(BaseForm):
         get_label="name",
         get_pk=lambda x: x.id,
         query_factory=lambda: User.query,
-        allow_blank=True,
+        allow_blank=False,
         default=lambda: User.get(id=current_user.id),
     )

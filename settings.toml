@@ -3,6 +3,7 @@ JSON_AS_ASCII = false
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 SESSION_REFRESH_EACH_REQUEST = true
 COLOR_THEME = "is-success"
+APP_NAME = "ClinVision"
 
 EXTENSIONS = [
     "timesheet.ext.api:init_app",
@@ -10,6 +11,7 @@ EXTENSIONS = [
     "timesheet.ext.site:init_app",
     "timesheet.ext.auth:init_app",
     "timesheet.ext.admin:init_app",
+    "timesheet.ext.cli:init_app",
 ]
 
 [development]

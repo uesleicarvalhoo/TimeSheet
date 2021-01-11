@@ -5,11 +5,12 @@ CREATE TABLE user(
     name varchar(50) not null,
     username varchar(30) not null,
     password varchar(150) not null,
-    workload integer,
+    workload time,
     admin tinyint(1),
     active tinyint(1),
     created_at datetime,
-    updated_at datetime
+    updated_at datetime,
+    week_days_off varchar(50)
 );
 
 CREATE TABLE register(
@@ -29,6 +30,7 @@ CREATE TABLE pauses(
     pause_id integer,
     entry time,
     finish time,
+    time time,
     created_at datetime,
     updated_at datetime
 );
@@ -39,3 +41,12 @@ CREATE TABLE pause_infos(
     end_label varchar(50) not null,
     time integer not null
 );
+
+CREATE TABLE days_off(
+    id integer primary key auto_increment,
+    user_id integer(50) not null,
+    date date not null,
+);
+
+
+ALTER TABLE user ADD CONSTRAINT unique_username UNIQUE (username);

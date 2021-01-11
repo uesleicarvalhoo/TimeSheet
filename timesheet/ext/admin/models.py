@@ -2,7 +2,7 @@ from flask import current_app, flash, redirect, request, url_for
 from flask_admin import AdminIndexView, expose
 from flask_admin.contrib.sqla.view import ModelView
 from flask_login import current_user
-from wtforms import IntegerField
+from wtforms import TimeField
 
 
 class AdminView(AdminIndexView):
@@ -60,7 +60,7 @@ class UserModelView(BaseView):
         "userame": "Usuario",
         "name": "Nome",
         "password": "Senha",
-        "workload": "Carga horaria (mensal)",
+        "workload": "Carga horaria (diaria)",
         "created_at": "Criado em",
         "updated_at": "Atualizado em",
     }
@@ -81,4 +81,4 @@ class PauseInfosView(BaseView):
         "time": "Tempo (mim)",
     }
 
-    form_overrides = {"time": IntegerField}
+    form_overrides = {"time": TimeField}

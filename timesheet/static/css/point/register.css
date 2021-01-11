@@ -3,16 +3,9 @@
     width: fit-content;
     padding-left: 1rem;
     padding-right: 1rem;
+    width: 12rem;
 }
 
 .form-body label{
     text-align: center;
-}
-
-.form-body label{
-    text-align: center;
-}
-
-.register button{
-    width: 10rem;
 }

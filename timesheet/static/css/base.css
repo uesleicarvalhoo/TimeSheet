@@ -13,3 +13,11 @@
 .form-body{
     padding: 1rem;
 }
+
+.fix-width-9{
+    width: 9rem;
+}
+
+.text-left{
+    text-align: left;
+}

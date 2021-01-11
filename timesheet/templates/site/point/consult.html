@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/point/consult.css') }}">
+{% endblock extra_css %}
+
 {% block body %}
 <article class="panel {{ color_theme }}">
     <div class="panel-heading">Consulta de ponto</div>
@@ -14,9 +19,9 @@
                         <div class="control">
                             <div class="select">
                                 {% if current_user.is_admin %}
-                                    {{ form.users_list() }}
+                                {{ form.users_list() }}
                                 {% else %}
-                                    {{ form.users_list(disabled="disabled") }}
+                                {{ form.users_list(disabled="disabled") }}
                                 {% endif %}
                             </div>
                         </div>
@@ -48,9 +53,7 @@
                 </div>
                 <div class="control is-expanded">
                     <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">ﾠ</label>
-                        </div>
+                        <div class="field-label is-normal"></div>
                         <button class="button {{color_theme}}">Consultar</button>
                     </div>
                 </div>
@@ -68,8 +71,9 @@
                     <th>{{pause.end_label}}</th>
                     {% endfor %}
                     <th>Saida</th>
-                    <th>Atraso</th>
-                    <th>BH</th>
+                    <th>Carga horaria</th>
+                    <th>Horas trabalhadas</th>
+                    <th>Saldo de horas</th>
                 </tr>
             </thead>
             {% for register in registers %}
@@ -81,10 +85,17 @@
                 <td>{{ register.get_pause(pause.id).finish_hour }}</td>
                 {% endfor %}
                 <td>{{register.finish_hour}}</td>
-                <td> - </td>
-                <td> - </td>
+                <td>{{register.workload.isoformat()[:5]}}</td>
+                <td>{{register.get_worked_hours().isoformat()[:5]}}</td>
+                {% set balance_hours = register.get_balance_hours() %}
+                {% if balance_hours["negative"] %}
+                   <td class="negative-time">{{balance_hours["time"].isoformat()[:5]}}</td>
+                   {% else%}
+                   <td class="positive-time">{{balance_hours["time"].isoformat()[:5]}}</td>
+                {% endif %}
             </tr>
             {% endfor %}
         </table>
+    </div>
 </article>
 {% endblock body %}

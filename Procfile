@@ -1,1 +1,1 @@
-web: gunicorn "timesheet.app:create_app()" -w 1
+web: gunicorn "timesheet.app:create_app()" -w 4

@@ -6,7 +6,7 @@ from flask import Flask, flash, redirect, request, url_for
 from flask_login import LoginManager, current_user, login_user
 from werkzeug.security import check_password_hash
 
-from timesheet.ext.db.models import User
+from timesheet.ext.db.models.users import User
 
 login_manager = LoginManager()
 

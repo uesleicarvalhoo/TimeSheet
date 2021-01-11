@@ -1,4 +1,14 @@
 {% extends "base.html" %}
+
 {% block body %}
-<h6 class="title is-6">Sistema para controle de ponto da ClinVision</h6>
+{% from "macros/render_form.html" import render_info %}
+<article class="panel {{ color_theme }}">
+    <div class="panel-heading">Resumo</div>
+    <div class="form-body">
+        {{ render_info("Matricula", current_user.id) }}
+        {{ render_info("Nome", current_user.name.title()) }}
+        {{ render_info("Carga horaria", current_user.workload) }}
+        {{ render_info("Banco de horas", current_user.get_bank_of_hours()) }}
+    </div>
+</article>
 {% endblock body %}
