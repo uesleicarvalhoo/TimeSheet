@@ -33,7 +33,7 @@ def choice(data: dict, item: Any) -> str:
 
 def generate_years() -> List[int]:
     year = datetime.today().year
-    return [2020] + [y for y in range(2020, year)]
+    return [2020] + [y + 1 for y in range(2020, year)]
 
 
 class BaseForm(FlaskForm):
