@@ -20,6 +20,7 @@ class Register(BaseModel):
     workload = db.Column("workload", db.Time, nullable=False)
     created_at = db.Column("created_at", db.Date, default=datetime.utcnow())
     updated_at = db.Column("updated_at", db.Date, onupdate=datetime.utcnow())
+
     pauses = db.relationship("Pauses", back_populates="register")
     editable_fields = ["entry", "finish"]
 

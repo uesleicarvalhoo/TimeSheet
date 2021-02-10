@@ -2,10 +2,10 @@
 JSON_AS_ASCII = false
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 SESSION_REFRESH_EACH_REQUEST = true
-COLOR_THEME = "is-success"
+COLOR_THEME = "is-primary"
 APP_NAME = "OralSin"
-FLASK_FAV_ICO="img/oralsin/favicon.ico"
-FLASK_IMG_LOGO="img/oralsin/logo.png"
+FAV_ICO="img/oralsin/favicon.ico"
+IMG_LOGO="img/oralsin/logo.png"
 
 
 EXTENSIONS = [
@@ -19,7 +19,7 @@ EXTENSIONS = [
 
 [development]
 DEBUG = true
-SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:admin@localhost:3306/timesheet"
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:MySql2019!@localhost:3306/timesheet"
 
 [production]
 SQLALCHEMY_POOL_RECYCLE = 100

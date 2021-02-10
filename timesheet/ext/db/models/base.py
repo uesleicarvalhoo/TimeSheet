@@ -1,4 +1,3 @@
-from abc import ABCMeta
 from datetime import date, datetime, time
 from typing import Dict
 
@@ -6,7 +5,7 @@ from timesheet.ext.db import db
 from timesheet.utils.date import get_now_datetime
 
 
-class BaseModel(db.Model, ABCMeta):
+class BaseModel(db.Model):
     __name__ = "registro"
     __abstract__ = True
     editable_fields = []

@@ -2,9 +2,9 @@ USE heroku_4c9d2a4e8dd9512;
 
 CREATE TABLE user(
     id integer primary key auto_increment,
-    name varchar(50) not null,
     username varchar(30) not null,
     password varchar(150) not null,
+    name varchar(50) not null,
     workload time,
     admin tinyint(1),
     active tinyint(1),
@@ -16,9 +16,10 @@ CREATE TABLE user(
 CREATE TABLE register(
     id Integer primary key auto_increment,
     user_id integer not null,
-    date datetime,
     entry time,
     finish time,
+    date date,
+    workload time,
     created_at datetime,
     updated_at datetime
 
@@ -45,7 +46,7 @@ CREATE TABLE pause_infos(
 CREATE TABLE days_off(
     id integer primary key auto_increment,
     user_id integer(50) not null,
-    date date not null,
+    date date not null
 );
 
 

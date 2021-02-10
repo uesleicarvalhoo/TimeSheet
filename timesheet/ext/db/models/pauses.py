@@ -10,6 +10,7 @@ class Pauses(BaseModel):
     __tablename__ = "pauses"
     __name__ = "pausa"
     editable_fields = ["entry", "finish"]
+
     id = db.Column("id", db.Integer, primary_key=True)
     register_id = db.Column("register_id", db.Integer, db.ForeignKey("register.id"))
     pause_id = db.Column("pause_id", db.Integer, db.ForeignKey("pause_infos.id"))

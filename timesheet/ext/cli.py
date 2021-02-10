@@ -11,7 +11,7 @@ def init_app(app: Flask) -> None:
     app.cli.add_command(app.cli.command()(drop_db))
 
 
-@click.option("--user", "-u")
+@click.option("--username", "-u")
 @click.option("--passwd", "-p")
 @click.option("--workload", "-w")
 @click.option("--name", "-n", default="")
@@ -21,7 +21,7 @@ def create_user(username: str, passwd: str, name: str, workload: int, admin: boo
     response = user.save()
 
     if response["success"]:
-        click.echo("Usuario %s criado com sucesso!" % user)
+        click.echo('Usuario "%s" criado com sucesso!' % user)
 
     else:
         click.echo("Erro ao criar usuario\nDescrição: %s" % response["message"])
