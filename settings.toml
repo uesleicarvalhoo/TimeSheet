@@ -23,4 +23,4 @@ SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:MySql2019!@localhost:3306
 
 [production]
 SQLALCHEMY_POOL_RECYCLE = 100
-SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://b846f101070bdb:4ea95c24@us-cdbr-east-02.cleardb.com/heroku_4c9d2a4e8dd9512"
+SQLALCHEMY_DATABASE_URI = "postgres://bnwiejdzsggqtz:ceb30ea29f11b34e99f024d3aa7ae1b931159e1daca4262928d7993e9c5965cd@ec2-54-145-249-177.compute-1.amazonaws.com:5432/d517jcpr0fte76"

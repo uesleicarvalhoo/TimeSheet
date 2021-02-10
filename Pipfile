@@ -21,6 +21,7 @@ flask-login = "*"
 flask-pydantic = "*"
 flask-admin = "*"
 werkzeug = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.8"
