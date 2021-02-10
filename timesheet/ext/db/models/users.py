@@ -15,15 +15,15 @@ class User(BaseModel, UserMixin):
     __tablename__ = "user"
     __name__ = "usuario"
     id = db.Column("id", db.Integer, primary_key=True)
-    username = db.Column("username", db.Unicode, unique=True, nullable=False)
-    password = db.Column("password", db.Unicode, nullable=False)
-    name = db.Column("name", db.Unicode, nullable=False)
+    username = db.Column("username", db.Unicode(30), unique=True, nullable=False)
+    password = db.Column("password", db.Unicode(150), nullable=False)
+    name = db.Column("name", db.Unicode(50), nullable=False)
     workload = db.Column("workload", db.Time, nullable=False)
     admin = db.Column("admin", db.Boolean, default=False)
     active = db.Column("active", db.Boolean, default=True)
     created_at = db.Column("created_at", db.Date, default=datetime.utcnow())
     updated_at = db.Column("updated_at", db.Date, onupdate=datetime.utcnow())
-    week_days_off = db.Column("week_days_off", db.Unicode)
+    week_days_off = db.Column("week_days_off", db.Unicode(50))
     days_off = db.relationship("DaysOff", back_populates="user")
 
     @staticmethod
