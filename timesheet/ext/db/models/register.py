@@ -3,20 +3,20 @@ from datetime import datetime, time
 from typing import Dict, List
 
 from timesheet.ext.db import db
+from timesheet.ext.db.models import BaseModel, Pauses
+from timesheet.ext.db.models.users import User
 from timesheet.ext.utils import get_today, subtract_time
-
-from . import BaseModel
-from .pauses import Pauses
+from timesheet.utils.date import get_now_datetime
 
 
-class Register(BaseModel, db.Model):
+class Register(BaseModel):
     __tablename__ = "register"
     __name__ = "registro"
     id = db.Column("id", db.Integer, primary_key=True)
     user_id = db.Column("user_id", db.Integer)
     entry = db.Column("entry", db.Time)
     finish = db.Column("finish", db.Time)
-    date = db.Column("date", db.Date, default=datetime.now().date())
+    date = db.Column("date", db.Date, default=get_now_datetime().date())
     workload = db.Column("workload", db.Time, nullable=False)
     created_at = db.Column("created_at", db.Date, default=datetime.utcnow())
     updated_at = db.Column("updated_at", db.Date, onupdate=datetime.utcnow())
@@ -41,9 +41,13 @@ class Register(BaseModel, db.Model):
 
     @staticmethod
     def create(user_id: int, date: dt, save: bool = True) -> Dict:
-        register = Register(user_id=user_id, date=date)
+        user = User.get(id=user_id)
+
+        register = Register(user_id=user.id, date=date, workload=user.workload)
+
         if save:
             return register.save()
+
         return register
 
     @staticmethod

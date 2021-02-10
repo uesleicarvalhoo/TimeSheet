@@ -1,7 +1,6 @@
-from datetime import datetime
 from typing import List
 
-from flask import request
+from flask import request, Response
 from flask_login import current_user
 from flask_pydantic import validate
 from flask_restful import Api, Resource
@@ -9,12 +8,11 @@ from flask_restful import Api, Resource
 from timesheet.ext.auth import check_api_auth
 from timesheet.ext.db.models.pauses import Pauses
 from timesheet.ext.db.models.register import Register
-
+from timesheet.utils.date import get_now_datetime
 
 from .schemas import Date, Pause
 
 api = Api()
-
 
 @api.resource("/api/register")
 class ResourceRegisterPoint(Resource):
@@ -26,11 +24,11 @@ class ResourceRegisterPoint(Resource):
         pause_id = request.body_params.id
         event = request.body_params.event
         type = request.body_params.type
-        hour = datetime.now().time()
-        register = Register.get(user_id=user_id, date=datetime.now().date())
+        hour = get_now_datetime().time()
+        register = Register.get(user_id=user_id, date=get_now_datetime().date())
 
         if register is None:
-            register = Register.create(user_id, date=datetime.now().date(), save=False)
+            register = Register.create(user_id, date=get_now_datetime().date(), save=False)
             register.save()
 
         if type == "register":

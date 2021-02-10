@@ -1,7 +1,8 @@
-from . import BaseModel, db
+from timesheet.ext.db import db
+from timesheet.ext.db.models import BaseModel
 
 
-class PauseInfos(BaseModel, db.Model):
+class PauseInfos(BaseModel):
     __tablename__ = "pause_infos"
     id = db.Column("id", db.Integer, primary_key=True)
     init_label = db.Column("init_label", db.Unicode(20), nullable=False)
@@ -17,7 +18,7 @@ class PauseInfos(BaseModel, db.Model):
         return PauseInfos.query.filter_by(id=id).first().time
 
 
-class DaysOff(BaseModel, db.Model):
+class DaysOff(BaseModel):
     __tablename__ = "days_off"
     id = db.Column("id", db.Integer, primary_key=True)
     user_id = db.Column("user_id", db.Integer, db.ForeignKey("user.id"))

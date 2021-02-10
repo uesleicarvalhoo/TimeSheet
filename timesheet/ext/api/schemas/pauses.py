@@ -1,5 +1,3 @@
-from datetime import date
-
 from pydantic import BaseModel, validator
 
 
@@ -21,7 +19,3 @@ class Pause(BaseModel):
             raise ValueError(f'{v} não é um tipo valido')
 
         return v
-
-
-class Date(BaseModel):
-    date: date

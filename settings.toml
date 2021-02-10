@@ -3,7 +3,10 @@ JSON_AS_ASCII = false
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 SESSION_REFRESH_EACH_REQUEST = true
 COLOR_THEME = "is-success"
-APP_NAME = "ClinVision"
+APP_NAME = "OralSin"
+FLASK_FAV_ICO="img/oralsin/favicon.ico"
+FLASK_IMG_LOGO="img/oralsin/logo.png"
+
 
 EXTENSIONS = [
     "timesheet.ext.api:init_app",

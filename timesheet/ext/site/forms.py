@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, List
+from typing import Any, List, Tuple
 
 from flask_login import current_user
 from flask_wtf import FlaskForm
@@ -25,7 +25,7 @@ MONTHS = [
 ]
 
 
-def choice(data: dict, item: Any) -> str:
+def choice(data: Tuple[int, str], item: Any) -> str:
     for key, value in data:
         if key == item:
             return key
@@ -33,7 +33,7 @@ def choice(data: dict, item: Any) -> str:
 
 def generate_years() -> List[int]:
     year = datetime.today().year
-    return [2020] + [y for y in range(2021, year)]
+    return [2020] + [y + 1 for y in range(2020, year)]
 
 
 class BaseForm(FlaskForm):

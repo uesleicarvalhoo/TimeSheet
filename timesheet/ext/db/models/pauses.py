@@ -1,13 +1,12 @@
 from datetime import datetime, timedelta
 from typing import Dict
 
+from timesheet.ext.db import db
+from timesheet.ext.db.models import BaseModel, PauseInfos
 from timesheet.ext.utils import parse_int_to_time, subtract_time
 
-from . import BaseModel, db
-from .infos import PauseInfos
 
-
-class Pauses(BaseModel, db.Model):
+class Pauses(BaseModel):
     __tablename__ = "pauses"
     __name__ = "pausa"
     editable_fields = ["entry", "finish"]

@@ -1,15 +1,17 @@
 import re
 from datetime import datetime, time
+from typing import Any
 
 from flask_login import UserMixin
 from sqlalchemy import event
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash
 
-from . import BaseModel, db
+from timesheet.ext.db import db
+from timesheet.ext.db.models import BaseModel
 
 
-class User(BaseModel, UserMixin, db.Model):
+class User(BaseModel, UserMixin):
     __tablename__ = "user"
     __name__ = "usuario"
     id = db.Column("id", db.Integer, primary_key=True)
@@ -33,7 +35,7 @@ class User(BaseModel, UserMixin, db.Model):
         return user
 
     @staticmethod
-    def delete(**kwargs: dict):
+    def delete(**kwargs: dict) -> None:
         User.query.filter_by(**kwargs).delete()
         db.session.commit()
 
@@ -65,7 +67,7 @@ class User(BaseModel, UserMixin, db.Model):
 
 
 @event.listens_for(User.password, 'set', retval=True)
-def hash_user_password(target, value, oldvalue, initiator):
+def hash_user_password(target, value, oldvalue, initiator) -> Any:
     if value != oldvalue:
         return generate_password_hash(value)
 

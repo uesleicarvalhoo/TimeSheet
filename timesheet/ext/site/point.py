@@ -2,8 +2,8 @@ from flask import Blueprint, Response, render_template
 from flask_login import current_user, login_required
 from sqlalchemy import extract
 
-from timesheet.ext.db.models.register import Register
 from timesheet.ext.db.models.infos import PauseInfos
+from timesheet.ext.db.models.register import Register
 
 from .forms import FormTimeSheet
 
