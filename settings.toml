@@ -3,7 +3,7 @@ JSON_AS_ASCII = false
 SQLALCHEMY_TRACK_MODIFICATIONS = false
 SESSION_REFRESH_EACH_REQUEST = true
 COLOR_THEME = "is-primary"
-APP_NAME = "OralSin"
+APP_NAME = "Oral Faccia"
 FAV_ICO="img/oralsin/favicon.ico"
 IMG_LOGO="img/oralsin/logo.png"
 
